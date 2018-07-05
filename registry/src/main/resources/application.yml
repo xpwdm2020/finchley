@@ -1,0 +1,28 @@
+server:
+  port: 8763
+spring:
+  application:
+    name: registry
+management:
+  server:
+    port: 9274
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /actuator
+      path-mapping:
+        health: /healthcheck
+        info:  /infocheck
+eureka:
+  instance:
+    hostname: localhost
+    health-check-url-path: ${management.endpoints.web.base-path}${management.endpoints.web.path-mapping.health}
+    status-page-url-path: ${management.endpoints.web.base-path}${management.endpoints.web.path-mapping.info}
+  client:
+    service-url:
+      defaultZone: http://localhost:8763/eureka/
+    fetch-registry: false
+    register-with-eureka: false
+  server:
+    renewal-percent-threshold: 0.8

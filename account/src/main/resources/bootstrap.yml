@@ -1,0 +1,36 @@
+server:
+  port: 8765
+spring:
+  application:
+      name: account
+  jpa:
+    show-sql: true
+    hibernate:
+       ddl-auto: validate
+       naming:
+         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    database: mysql
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+  datasource:
+      url: jdbc:mysql://47.98.124.220:3306/qzj?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+      driver-class-name: com.mysql.jdbc.Driver
+      username: root
+      password: root
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      probability: 1.0
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config
+      fail-fast: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8763/eureka/
