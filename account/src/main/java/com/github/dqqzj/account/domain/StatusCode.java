@@ -1,7 +1,6 @@
 package com.github.dqqzj.account.domain;
 
 import com.google.common.collect.ImmutableMap;
-import com.github.dqqzj.common.annotation.RestStatus;
 
 /**
  * @author qinzhongjian

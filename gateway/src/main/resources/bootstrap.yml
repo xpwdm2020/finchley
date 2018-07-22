@@ -9,33 +9,26 @@ spring:
     sampler:
       probability: 1.0
   cloud:
-    gateway:
-      discovery:
-        locator:
-          enabled: true
-      routes:
-      - id: hystrix_route
-        uri: lb://account:8765
-        predicates:
-        - Path=/api/**
-        filters:
-        - name: Hystrix
-          args:
-            name: fallbackcmd
-            fallbackUri: forward:/fallback
+      gateway:
+        discovery:
+          locator:
+            enabled: true
+        routes:
+        - id: account
+          uri: lb://account
+          predicates:
+          - Path=/account/**
+          filters:
+          - SwaggerHeaderFilter
+          - StripPrefix=1
+        - id: common
+          uri: lb://common
+          predicates:
+          - Path=/common/**
+          filters:
+          - SwaggerHeaderFilter
+          - StripPrefix=1
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8763/eureka/
-hystrix:
-  command:
-    fallbackcm:
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 5000
-management:
-  endpoints:
-    web:
-      exposure:
-        include: hystrix.stream

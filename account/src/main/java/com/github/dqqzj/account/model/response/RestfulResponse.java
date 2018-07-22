@@ -11,23 +11,25 @@ import lombok.ToString;
 
 /**
  * @author qinzhongjian
- * @date created in 2018/6/26 16:59
+ * @date created in 2018/6/25 22:45
  * @since 1.0.0
  */
 @Data
 @NoArgsConstructor
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RegisterResponse extends RestfulResponse {
-    private static final long serialVersionUID = 7883775815440213351L;
+public class RestfulResponse implements Response {
 
-    @JsonProperty("mobile")
-    @ApiModelProperty(value = "手机号", example = "13146701494", required = true)
-    private String mobile;
+    private static final long serialVersionUID = -7443304902819898146L;
 
-    @JsonProperty("balance")
-    @ApiModelProperty(value = "用户的初始化余额", example = "100000000", required = true)
-    private Long balance;
+    public static final int DEFAULT_OK = 20000;
+
+    /**
+     * [M] 平台状态码
+     */
+    @JsonProperty("code")
+    @ApiModelProperty(value = "平台状态码", example = "20000", required = true)
+    private int code = DEFAULT_OK;
 }

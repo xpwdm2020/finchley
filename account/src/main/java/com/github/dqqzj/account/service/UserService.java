@@ -1,5 +1,7 @@
 package com.github.dqqzj.account.service;
 
+import com.github.dqqzj.account.model.Shift;
+import com.github.dqqzj.account.utils.OrikaMapper;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.github.dqqzj.account.domain.StatusCode;
@@ -9,8 +11,6 @@ import com.github.dqqzj.account.model.request.RegisterRequest;
 import com.github.dqqzj.account.model.response.LoginResponse;
 import com.github.dqqzj.account.model.response.RegisterResponse;
 import com.github.dqqzj.account.repository.UserRepository;
-import com.github.dqqzj.common.model.Shift;
-import com.github.dqqzj.common.util.OrikaMapper;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,42 +1,28 @@
-package com.github.dqqzj.account.domain;
+package com.github.dqqzj.account.model.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 /**
  * @author qinzhongjian
- * @date created in 2018/6/26 12:55
+ * @date created in 2018/6/26 11:45
  * @since 1.0.0
  */
 @Data
 @NoArgsConstructor
-@ToString(callSuper = true)
+@ToString
+@EqualsAndHashCode
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Entity
-@Table(name = "user")
-public class User  {
+public class RestfulRequest implements Request {
 
-    private static final long serialVersionUID = -1288891508177236744L;
-
-    @Id
-    private String mobile;
-
-    private String password;
-
-    private String salt;
-
-    private Long balance;
+    private static final long serialVersionUID = -2363877433041183308L;
 
 }
-
