@@ -1,34 +1,90 @@
 server:
-  port: 8764
+  port: 8763
+  use-forward-headers: true
 spring:
   application:
     name: gateway
+  security:
+    user:
+      name: admin
+      password: admin
+  thymeleaf:
+    cache: false
   zipkin:
     base-url: http://localhost:9411
   sleuth:
     sampler:
       probability: 1.0
   cloud:
-      gateway:
-        discovery:
-          locator:
-            enabled: true
-        routes:
-        - id: account
-          uri: lb://account
-          predicates:
-          - Path=/account/**
-          filters:
-          - SwaggerHeaderFilter
-          - StripPrefix=1
-        - id: common
-          uri: lb://common
-          predicates:
-          - Path=/common/**
-          filters:
-          - SwaggerHeaderFilter
-          - StripPrefix=1
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+      - id: elasticsearch
+        uri: lb://elasticsearch
+        predicates:
+        - Path=/elasticsearch/**
+        filters:
+        - SwaggerHeaderFilter
+        - StripPrefix=1
+  datasource:
+      url: jdbc:mysql://52.80.202.157:3306/gzw?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      username: root
+      password: root
+      driver-class-name: com.mysql.jdbc.Driver
+      platform: mysql
+      type: com.alibaba.druid.pool.DruidDataSource
+      # 下面为连接池的补充设置，应用到上面所有数据源中
+      # 初始化大小，最小，最大
+      initialSize: 1
+      minIdle: 3
+      maxActive: 20
+      # 配置获取连接等待超时的时间
+      maxWait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 30000
+      validationQuery: select 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat,wall,slf4j
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      # 合并多个DruidDataSource的监控数据
+      #useGlobalDataSourceStat: true
+  jpa:
+#    show-sql: true
+    hibernate:
+      ddl-auto: validate
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8763/eureka/
+      defaultZone: http://gzw:gzw@localhost:8761/eureka/
+hystrix:
+  command:
+    fallbackcm:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
+ribbon:
+  ConnectTimeout: 3000
+  ReadTimeout: 6000
+  OkToRetryOnAllOperations: true
+  MaxAutoRetriesNextServer: 0
+  MaxAutoRetries: 2
